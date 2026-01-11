@@ -102,7 +102,7 @@ self.addEventListener("message", function(e) {
     
     // obfuscatorio
     try {
-      const { ObfuscatorIO } = await import("../packers/obfuscatorio.js");
+      const { ObfuscatorIO } = await import("../decoders/obfuscatorio.js");
       let old;
       do {
       old = source;
