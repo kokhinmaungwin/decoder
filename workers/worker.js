@@ -113,9 +113,9 @@ self.addEventListener("message", function(e) {
 
    // javascriptobfuscator
    try {
-     const { JSObfuscator } = await import("../packers/javascriptobfuscator.js");
+     const { JavascriptObfuscator } = await import("../packers/javascriptobfuscator.js");
      if (/_0x[a-f0-9]{4,6}/i.test(source)) {
-       source = JSObfuscator(source);
+       source = JavascriptObfuscator(source);
        mark("javascriptobfuscator");
      }
    } catch {}
