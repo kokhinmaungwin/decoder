@@ -29,6 +29,18 @@ export function ObfuscatorIO(source, options = {}) {
   return decode(splitMultiVar(detectMatch, source), options, detectPattern);
 }
 
+ObfuscatorIO.detect = function (source) {
+  try {
+    return !!source.match(/((?![^_a-zA-Z$])[\w$]*)\(-?('|")(0x[a-f\d]+|\\x30\\x78[\\xa-f\d]+)\2/gi);
+  } catch {
+    return false;
+  }
+};
+
+ObfuscatorIO.unpack = function (source, options = {}) {
+  return ObfuscatorIO(source, options);
+};
+
 function decode({ headCode, mainCode }, options, detectPattern) {
   headCode = headCode.replace(/\b(const|let)(\s*(?![^_a-zA-Z$])[\w$]*=)/gi, 'var $2');
   eval(headCode);
@@ -187,4 +199,8 @@ function getFuncDefiner(key, source) {
   }
 
   return { sourceFunc, keyFunc };
+}
+
+if (typeof self !== 'undefined') {
+  self.ObfuscatorIO = ObfuscatorIO;
 }
