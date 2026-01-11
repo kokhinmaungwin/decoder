@@ -1,64 +1,29 @@
-/* MyObfuscate */
 export const MyObfuscate = {
-  detect(str) {
-    if (/^var _?[0O1lI]{3}\=('|\[).*\)\)\);/.test(str)) {
-      return true;
-    }
-    if (/^function _?[0O1lI]{3}\(_/.test(str) && /eval\(/.test(str)) {
-      return true;
-    }
-    return false;
+
+  detect(code) {
+    return /\bvar\s+\w+\s*=\s*function\s*\(\w+\)\s*\{\s*return\s*\[/.test(code);
   },
 
-  unpack(str) {
-    if (!MyObfuscate.detect(str)) return str;
+  unpack(code) {
+    // 1) extract lookup function
+    const fnMatch = code.match(
+      /var\s+(\w+)\s*=\s*function\s*\(\w+\)\s*\{\s*return\s*(\[[^\]]+\])\s*\[\w+\]\s*;\s*\};/
+    );
 
-    const originalEval = eval;
+    if (!fnMatch) return code;
 
-    try {
-      // override eval temporarily
-      eval = function (unpacked) { // eslint-disable-line no-eval
-        if (MyObfuscate.startsWith(unpacked, 'var _escape')) {
-          const matches = /'([^']*)'/.exec(unpacked);
-          if (matches) {
-            let unescaped = unescape(matches[1]);
+    const fnName = fnMatch[1];
+    const array = eval(fnMatch[2]); // SAFE: only literal array
 
-            if (MyObfuscate.startsWith(unescaped, '<script>')) {
-              unescaped = unescaped.slice(8);
-            }
-            if (MyObfuscate.endsWith(unescaped, '</script>')) {
-              unescaped = unescaped.slice(0, -9);
-            }
+    // 2) replace calls _my(0) → "alert"
+    code = code.replace(
+      new RegExp(fnName + "\\((\\d+)\\)", "g"),
+      (_, i) => JSON.stringify(array[Number(i)])
+    );
 
-            unpacked = unescaped;
-          }
-        }
+    // 3) remove helper function
+    code = code.replace(fnMatch[0], "");
 
-        unpacked =
-          "// ⚠️ Unpacker warning: be careful using myobfuscate.com\n" +
-          "// free version scripts may call back home\n\n" +
-          unpacked;
-
-        throw unpacked; // stop execution
-      };
-
-      originalEval(str);
-    } catch (e) {
-      if (typeof e === 'string') {
-        str = e;
-      }
-    } finally {
-      eval = originalEval; // ✅ 반드시 restore
-    }
-
-    return str;
-  },
-
-  startsWith(str, what) {
-    return str.slice(0, what.length) === what;
-  },
-
-  endsWith(str, what) {
-    return str.slice(-what.length) === what;
+    return code;
   }
 };
