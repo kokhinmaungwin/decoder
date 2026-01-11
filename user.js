@@ -61,7 +61,7 @@ export async function decodeByType(input, type) {
 
       case "aa": {
         const { AADecode } = await import("./decoders/aadecode.js");
-        code = AADecode.decode(code);
+        code = AADecode(code);
         history.push("aa");
         break;
       }
