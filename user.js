@@ -77,8 +77,8 @@ export async function decodeByType(input, type) {
 
       case "javascriptobfuscator": {
         const { JavascriptObfuscator } = await import("./packers/javascriptobfuscator.js");
-        if (JavascriptObfuscator.detect(code)) {
-        code = JavascriptObfuscator.unpack(code);
+        if (/_0x[a-f0-9]{4,6}/i.test(code)) {
+        code = JavascriptObfuscator(code);
         history.push("javascriptobfuscator");
       }
         break;
