@@ -72,7 +72,10 @@ self.addEventListener("message", function(e) {
     // aaencode
     try {
       importScripts("../decoders/aadecode.js");
-      if (source.includes("ﾟωﾟ")) {
+      if (
+          source.includes("(ﾟДﾟ)") &&
+          source.includes("['_']")
+        ) {
         source = AADecode.decode(source);
         mark("aaencode");
       }
