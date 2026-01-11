@@ -1,0 +1,58 @@
+/* main.css */
+body {
+  background: #0f172a;
+  color: #e5e7eb;
+  font-family: monospace;
+  padding: 20px;
+  margin: 0;
+}
+
+h1, h2, h3 {
+  color: #38bdf8;
+}
+
+textarea {
+  width: 100%;
+  min-height: 160px;
+  background: #020617;
+  color: #a5f3fc;
+  border: 1px solid #334155;
+  padding: 10px;
+  box-sizing: border-box;
+  font-family: monospace;
+  font-size: 14px;
+  resize: vertical;
+}
+
+pre {
+  background: #020617;
+  padding: 10px;
+  border: 1px solid #334155;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  min-height: 200px;
+  font-family: monospace;
+  font-size: 14px;
+}
+
+button {
+  margin: 8px 8px 8px 0;
+  padding: 8px 16px;
+  background: #0284c7;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background: #0369a1;
+}
+
+.container {
+  max-width: 900px;
+  margin: auto;
+}
