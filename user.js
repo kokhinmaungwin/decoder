@@ -67,7 +67,7 @@ export async function decodeByType(input, type) {
       }
       
       case "obfuscatorio": {
-        const { ObfuscatorIO } = await import("./packers/obfuscatorio.js");
+        const { ObfuscatorIO } = await import("./decoders/obfuscatorio.js");
         if (ObfuscatorIO.detect(code)) {
         code = ObfuscatorIO.unpack(code);
         history.push("obfuscatorio");
@@ -76,15 +76,14 @@ export async function decodeByType(input, type) {
       }
 
       case "javascriptobfuscator": {
-  const { JavascriptObfuscator } = await import("./packers/javascriptobfuscator.js");
+        const { JavascriptObfuscator } = await import("./packers/javascriptobfuscator.js");
+        if (JavascriptObfuscator.detect(code)) {
+        code = JavascriptObfuscator.unpack(code);
+        history.push("javascriptobfuscator");
+      }
 
-  if (JavascriptObfuscator.detect(code)) {
-    code = JavascriptObfuscator.unpack(code);
-    history.push("javascriptobfuscator");
-  }
-
-  break;
-}
+        break;
+      }
 
       case "myobfuscate": {
         const { MyObfuscate } = await import("./packers/myobfuscate.js");
