@@ -113,25 +113,27 @@ self.addEventListener("message", function(e) {
 
    // javascriptobfuscator
    try {
-  const { JavascriptObfuscator } = await import("../packers/javascriptobfuscator.js");
+     const { JavascriptObfuscator } = await import("../packers/javascriptobfuscator.js");
+     if (JavascriptObfuscator.detect(source)) {
+       source = JavascriptObfuscator.unpack(source);
+       mark("javascriptobfuscator");
+     }
 
-  if (JavascriptObfuscator.detect(source)) {
-    source = JavascriptObfuscator.unpack(source);
-    mark("javascriptobfuscator");
-  }
-
-} catch (e) {
-  console.error("JSObfuscator failed", e);
-}
+   } catch (e) {
+     console.error("JSObfuscator failed", e);
+   }
 
    // myobfuscate
    try {
      const { MyObfuscate } = await import("../packers/myobfuscate.js");
-     if (/_0x[a-f0-9]{3,6}\s*=\s*\[/.test(source)) {
-       source = MyObfuscate(source);
-       mark("myobfuscate");
-     }
-    } catch {}
+     if (self.MyObfuscate && MyObfuscate.detect(source)) {
+‎    source = MyObfuscate.unpack(source);
+‎    mark("myobfuscate");
+‎  }
+‎
+  ‎} catch (e) {
+‎    console.error("MyObfuscate failed", e);
+  ‎}
     
     ‎// packer (Dean Edwards)
 ‎    try {
