@@ -134,15 +134,6 @@ self.addEventListener("message", function(e) {
   ‎} catch (e) {
 ‎    console.error("MyObfuscate failed", e);
   ‎}
-
-  // bracket call cleanup
-  try {
-    source = source.replace(
-    /window\["([^"]+)"\]\(([^)]+)\)/g,
-    (_, fn, args) => fn + "(" + args + ")"
-  );
-     mark("cleanup");
-   } catch {}
     
   // packer (Dean Edwards)
 ‎    try {
