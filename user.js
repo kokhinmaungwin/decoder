@@ -68,31 +68,39 @@ export async function decodeByType(input, type) {
       
       case "obfuscatorio": {
         const { ObfuscatorIO } = await import("./packers/obfuscatorio.js");
-        code = ObfuscatorIO(source);
+        if (ObfuscatorIO.detect(code)) {
+        code = ObfuscatorIO.unpack(code);
         history.push("obfuscatorio");
+      }
         break;
       }
-      
+
       case "javascriptobfuscator": {
-        const { JavaScriptObfuscator } = await import("./packers/javascriptobfuscator.js");
-        code = JavaScriptObfuscator(source);
+        const { JavascriptObfuscator } = await import("./packers/javascriptobfuscator.js");
+        if (JavascriptObfuscator.detect(code)) {
+        code = JavascriptObfuscator.unpack(code);
         history.push("javascriptobfuscator");
+      }
         break;
       }
-      
+
       case "myobfuscate": {
         const { MyObfuscate } = await import("./packers/myobfuscate.js");
-        code = MyObfuscate(source);
+        if (MyObfuscate.detect(code)) {
+        code = MyObfuscate.unpack(code);
         history.push("myobfuscate");
+      }
         break;
       }
-      
+
       case "p_a_c_k_e_r": {
         const { P_A_C_K_E_R } = await import("./packers/p_a_c_k_e_r.js");
-        code = P_A_C_K_E_R(source);
+        if (P_A_C_K_E_R.detect(code)) {
+        code = P_A_C_K_E_R.unpack(code);
         history.push("p_a_c_k_e_r");
+     }
         break;
-      }
+     }
       default:
         throw new Error("Unsupported decode type: " + type);
     }
