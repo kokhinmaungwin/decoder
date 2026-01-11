@@ -1,4 +1,3 @@
-/* P_A_C_K_E_R */
 export const P_A_C_K_E_R = {
 
   detect(str) {
@@ -24,25 +23,28 @@ export const P_A_C_K_E_R = {
 
   unpackChunk(str) {
     let unpackedSource = '';
-    const originalEval = eval;
 
     if (!this.detect(str)) return str;
 
     try {
-      eval = function (s) { // eslint-disable-line no-eval
-        unpackedSource += s;
+      // Fake eval function that collects unpacked code
+      const fakeEval = (code) => {
+        unpackedSource += code;
         return unpackedSource;
       };
 
-      originalEval(str);
+      // Replace eval calls in the packed code with fakeEval
+      const replacedStr = str.replace(/\beval\b/g, 'fakeEval');
+
+      // Use Function constructor to run replaced code with access to fakeEval
+      const exec = new Function('fakeEval', replacedStr);
+      exec(fakeEval);
 
       if (typeof unpackedSource === 'string' && unpackedSource.length) {
         str = unpackedSource;
       }
     } catch (e) {
-      // silently fail – return original
-    } finally {
-      eval = originalEval; // ✅ always restore
+      // silently fail – return original packed code
     }
 
     return str;
