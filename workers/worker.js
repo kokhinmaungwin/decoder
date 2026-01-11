@@ -134,8 +134,23 @@ self.addEventListener("message", function(e) {
   ‎} catch (e) {
 ‎    console.error("MyObfuscate failed", e);
   ‎}
+
+  try {
+  
+  source = source.replace(
+    /window\["([^"]+)"\]\(([^)]+)\)/g,
+    (_, fn, args) => fn + "(" + args + ")"
+  );
+
+  source = source.replace(
+    /console\["([^"]+)"\]\(([^)]+)\)/g,
+    (_, fn, args) => "console." + fn + "(" + args + ")"
+  );
+
+  mark("cleanup");
+  } catch {}
     
-    ‎// packer (Dean Edwards)
+  // packer (Dean Edwards)
 ‎    try {
 ‎      const { P_A_C_K_E_R } = await import("../packers/p_a_c_k_e_r.js");
 ‎      if (P_A_C_K_E_R.detect(source)) {
