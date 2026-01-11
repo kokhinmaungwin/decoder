@@ -102,7 +102,7 @@ self.addEventListener("message", function(e) {
     
     // obfuscatorio
     try {
-      const { ObfuscatorIO } = await import("../decoders/obfuscatorio.js");
+      const { ObfuscatorIO } = await import("../packers/obfuscatorio.js");
       let old;
       do {
       old = source;
@@ -113,7 +113,7 @@ self.addEventListener("message", function(e) {
 
    // javascriptobfuscator
    try {
-     const { JSObfuscator } = await import("../decoders/javascriptobfuscator.js");
+     const { JSObfuscator } = await import("../packers/javascriptobfuscator.js");
      if (/_0x[a-f0-9]{4,6}/i.test(source)) {
        source = JSObfuscator(source);
        mark("javascriptobfuscator");
@@ -122,7 +122,7 @@ self.addEventListener("message", function(e) {
 
    // myobfuscate
    try {
-     const { MyObfuscate } = await import("../decoders/myobfuscate.js");
+     const { MyObfuscate } = await import("../packers/myobfuscate.js");
      if (/_0x[a-f0-9]{3,6}\s*=\s*\[/.test(source)) {
        source = MyObfuscate(source);
        mark("myobfuscate");
