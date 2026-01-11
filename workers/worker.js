@@ -100,40 +100,41 @@ self.addEventListener("message", function(e) {
       }
     } catch {}
     
-    // obfuscatorio (obfuscator.io)
+    // obfuscatorio
     try {
-      importScripts("../decoders/obfuscatorio.js");
-      const Obf = self.ObfuscatorIO || self.default;
-      if (Obf && Obf.detect && Obf.detect(source)) {
-        source = Obf.unpack(source);
+      const { ObfuscatorIO } = await import("../decoders/obfuscatorio.js");
+      let old;
+      do {
+      old = source;
+        source = ObfuscatorIO(source,{calc:true,strMerge:true});
+      } while (source !== old);
         mark("obfuscatorio");
+    } catch {}
+
+   // javascriptobfuscator
+   try {
+     const { JSObfuscator } = await import("../decoders/javascriptobfuscator.js");
+     if (/_0x[a-f0-9]{4,6}/i.test(source)) {
+       source = JSObfuscator(source);
+       mark("javascriptobfuscator");
      }
    } catch {}
 
-    // p.a.c.k.e.r
+   // myobfuscate
+   try {
+     const { MyObfuscate } = await import("../decoders/myobfuscate.js");
+     if (/_0x[a-f0-9]{3,6}\s*=\s*\[/.test(source)) {
+       source = MyObfuscate(source);
+       mark("myobfuscate");
+     }
+    } catch {}
+    
+    // packer (Dean Edwards)
     try {
-      importScripts("../packers/p_a_c_k_e_r.js");
-      if (P_A_C_K_E_R.detect(source)) {
-        source = P_A_C_K_E_R.unpack(source);
+      const { Packer } = await import("../packers/p_a_c_k_e_r.js");
+      if (Packer.detect(source)) {
+        source = Packer.unpack(source);
         mark("p_a_c_k_e_r");
-      }
-    } catch {}
-    
-    // javascriptobfuscator
-    try {
-      importScripts("../packers/javascriptobfuscator.js");
-      if (JavascriptObfuscator.detect(source)) {
-        source = JavascriptObfuscator.unpack(source);
-        mark("javascriptobfuscator");
-      }
-    } catch {}
-    
-    // myobfuscate
-    try {
-      importScripts("../packers/myobfuscate.js");
-      if (MyObfuscate.detect(source)) {
-        source = MyObfuscate.unpack(source);
-        mark("myobfuscate");
       }
     } catch {}
 
