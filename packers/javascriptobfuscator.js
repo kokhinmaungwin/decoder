@@ -1,18 +1,32 @@
 export const JavascriptObfuscator = {
+
   detect(source) {
-    return /_0x[a-f0-9]{4,6}/i.test(source);
+    return /var\s+_0x[a-f0-9]+\s*=\s*\[/.test(source) &&
+           /_0x[a-f0-9]+\(\d+\)/.test(source);
   },
 
   unpack(source) {
-    const sandbox = {};
-    const fn = new Function("sandbox", `
-      with(sandbox){
-        ${source}
-        return typeof _0x !== "undefined" ? _0x : null;
-      }
-    `);
-    try { fn(sandbox); } catch {}
+    // extract string array
+    const arrMatch = source.match(/var\s+(_0x[a-f0-9]+)\s*=\s*(\[[^\]]+\])/);
+    if (!arrMatch) return source;
 
-    return source.replace(/_0x[a-f0-9]{4,6}\((0x[a-f0-9]+)\)/gi, m => eval(m));
+    const arrName = arrMatch[1];
+    const arr = eval(arrMatch[2]);   // ['log','Hello JSObfuscator']
+
+    // find mapper function
+    const fnMatch = source.match(
+      new RegExp("var\\s+(_0x[a-f0-9]+)\\s*=\\s*function\\(\\w+\\)\\s*\\{\\s*return\\s+" + arrName + "\\[\\w+\\];\\s*\\}")
+    );
+    if (!fnMatch) return source;
+
+    const fnName = fnMatch[1];
+
+    // replace _0xXXXX(n) with actual string
+    source = source.replace(
+      new RegExp(fnName + "\\((\\d+)\\)", "g"),
+      (_, i) => JSON.stringify(arr[Number(i)])
+    );
+
+    return source;
   }
 };
