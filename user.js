@@ -67,7 +67,7 @@ export async function decodeByType(input, type) {
       }
       
       case "obfuscatorio": {
-        const { ObfuscatorIO } = await import("./decoders/obfuscatorio.js");
+        const { ObfuscatorIO } = await import("./packers/obfuscatorio.js");
         code = ObfuscatorIO(source);
         history.push("obfuscatorio");
         break;
