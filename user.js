@@ -95,10 +95,8 @@ export async function decodeByType(input, type) {
 
       case "p_a_c_k_e_r": {
         const { P_A_C_K_E_R } = await import("./packers/p_a_c_k_e_r.js");
-        if (P_A_C_K_E_R.detect(code)) {
         code = P_A_C_K_E_R.unpack(code);
         history.push("p_a_c_k_e_r");
-     }
         break;
      }
       default:
