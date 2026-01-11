@@ -1,91 +1,13 @@
-/* JavascriptObfuscator */
-const JavascriptObfuscator = {
-  detect: function(str) {
-    return /^var _0x[a-f0-9]+ ?\= ?\[/.test(str);
-  },
-
-  unpack: function(str) {
-    if (JavascriptObfuscator.detect(str)) {
-      const matches = /var (_0x[a-f\d]+) ?\= ?\[(.*?)\];/.exec(str);
-      if (matches) {
-        const var_name = matches[1];
-        const strings = JavascriptObfuscator._smart_split(matches[2]);
-        str = str.substring(matches[0].length);
-        for (const k in strings) {
-          str = str.replace(new RegExp(var_name + '\\[' + k + '\\]', 'g'),
-            JavascriptObfuscator._fix_quotes(JavascriptObfuscator._unescape(strings[k])));
-        }
-      }
+export function JSObfuscator(source) {
+  const sandbox = {};
+  const fn = new Function("sandbox", `
+    with(sandbox){
+      ${source}
+      return typeof _0x !== "undefined" ? _0x : null;
     }
-    return str;
-  },
+  `);
+  try { fn(sandbox); } catch {}
 
-  _fix_quotes: function(str) {
-    const matches = /^"(.*)"$/.exec(str);
-    if (matches) {
-      str = matches[1];
-      str = "'" + str.replace(/'/g, "\\'") + "'";
-    }
-    return str;
-  },
-
-  _smart_split: function(str) {
-    const strings = [];
-    let pos = 0;
-    while (pos < str.length) {
-      if (str.charAt(pos) === '"') {
-      
-        let word = '';
-        pos += 1;
-        while (pos < str.length) {
-          if (str.charAt(pos) === '"') {
-            break;
-          }
-          if (str.charAt(pos) === '\\') {
-            word += '\\';
-            pos++;
-          }
-          word += str.charAt(pos);
-          pos++;
-        }
-        strings.push('"' + word + '"');
-      }
-      pos += 1;
-    }
-    return strings;
-  },
-
-  _unescape: function(str) {
-    
-    for (let i = 32; i < 128; i++) {
-      str = str.replace(new RegExp('\\\\x' + i.toString(16), 'ig'), String.fromCharCode(i));
-    }
-    str = str.replace(/\\x09/g, "\t");
-    return str;
-  },
-
-  run_tests: function(sanity_test) {
-    const t = sanity_test || new SanityTest();
-
-    t.test_function(JavascriptObfuscator._smart_split, "JavascriptObfuscator._smart_split");
-    t.expect('', []);
-    t.expect('"a", "b"', ['"a"', '"b"']);
-    t.expect('"aaa","bbbb"', ['"aaa"', '"bbbb"']);
-    t.expect('"a", "b\\\""', ['"a"', '"b\\\""']);
-    t.test_function(JavascriptObfuscator._unescape, 'JavascriptObfuscator._unescape');
-    t.expect('\\x40', '@');
-    t.expect('\\x10', '\\x10');
-    t.expect('\\x1', '\\x1');
-    t.expect("\\x61\\x62\\x22\\x63\\x64", 'ab"cd');
-    t.test_function(JavascriptObfuscator.detect, 'JavascriptObfuscator.detect');
-    t.expect('', false);
-    t.expect('abcd', false);
-    t.expect('var _0xaaaa', false);
-    t.expect('var _0xaaaa = ["a", "b"]', true);
-    t.expect('var _0xaaaa=["a", "b"]', true);
-    t.expect('var _0x1234=["a","b"]', true);
-    return t;
-  }
-};
-
-export { JavascriptObfuscator };
+  source = source.replace(/_0x[a-f0-9]{4,6}\((0x[a-f0-9]+)\)/gi, m => eval(m));
+  return source;
+}
