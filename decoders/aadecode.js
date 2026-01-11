@@ -1,27 +1,24 @@
-/* AA Decode */
-export const AADecode = {
-    decode: function(text) {
-      const evalPreamble = "(\uFF9F\u0414\uFF9F) ['_'] ( (\uFF9F\u0414\uFF9F) ['_'] (";
-      const decodePreamble = "( (\uFF9F\u0414\uFF9F) ['_'] (";
-      const evalPostamble = ") (\uFF9F\u0398\uFF9F)) ('_');";
-      const decodePostamble = ") ());";
+/* aadecode.js */
+globalThis.ﾟ = {};
+globalThis.ω = {};
+globalThis.ﾉ = function(){};
 
-      text = text.trim();
+export function AADecode(text) {
+  const evalPreamble = "(\uFF9F\u0414\uFF9F) ['_'] ( (\uFF9F\u0414\uFF9F) ['_'] (";
+  const decodePreamble = "( (\uFF9F\u0414\uFF9F) ['_'] (";
+  const evalPostamble = ") (\uFF9F\u0398\uFF9F)) ('_');";
+  const decodePostamble = ") ());";
 
-      if (!text) return "";
+  text = text.trim();
+  if (!text) return "";
 
-      if (text.indexOf(evalPreamble) < 0 || !text.endsWith(evalPostamble)) {
-        throw new Error("Given code is not encoded as aaencode.");
-      }
+  if (!text.includes(evalPreamble) || !text.endsWith(evalPostamble)) {
+    throw new Error("Not AA encoded");
+  }
 
-      const decodingScript = text.replace(evalPreamble, decodePreamble)
-                                 .replace(evalPostamble, decodePostamble);
+  const decodingScript = text
+    .replace(evalPreamble, decodePreamble)
+    .replace(evalPostamble, decodePostamble);
 
-      // Dummy variables
-      const ﾟ = {};
-      const ω = {};
-      const ﾉ = function() {};
-
-      return eval(decodingScript);
-    }
-  };
+  return (0, eval)(decodingScript); // force global eval
+}
