@@ -6,27 +6,39 @@ export const JavascriptObfuscator = {
   },
 
   unpack(source) {
-    // extract string array
+    // 1) extract string array
     const arrMatch = source.match(/var\s+(_0x[a-f0-9]+)\s*=\s*(\[[^\]]+\])/);
     if (!arrMatch) return source;
 
     const arrName = arrMatch[1];
-    const arr = eval(arrMatch[2]);   // ['log','Hello JSObfuscator']
+    const arr = eval(arrMatch[2]);
 
-    // find mapper function
+    // 2) find mapper
     const fnMatch = source.match(
-      new RegExp("var\\s+(_0x[a-f0-9]+)\\s*=\\s*function\\(\\w+\\)\\s*\\{\\s*return\\s+" + arrName + "\\[\\w+\\];\\s*\\}")
+      new RegExp(
+        "var\\s+(_0x[a-f0-9]+)\\s*=\\s*function\\(\\w+\\)\\s*\\{\\s*return\\s+" +
+        arrName + "\\[\\w+\\];\\s*\\}"
+      )
     );
     if (!fnMatch) return source;
 
     const fnName = fnMatch[1];
 
-    // replace _0xXXXX(n) with actual string
+    // 3) replace calls
     source = source.replace(
       new RegExp(fnName + "\\((\\d+)\\)", "g"),
       (_, i) => JSON.stringify(arr[Number(i)])
     );
 
-    return source;
+    // 4) remove dead code
+    source = source
+      // remove array
+      .replace(new RegExp("var\\s+" + arrName + "\\s*=\\s*\\[[^\\]]+\\];?", "g"), "")
+      // remove mapper function
+      .replace(new RegExp("var\\s+" + fnName + "\\s*=\\s*function[\\s\\S]*?\\};?", "g"), "")
+      // remove useless IIFE wrapper
+      .replace(/\(function\s*\([^)]*\)\s*\{([\s\S]*?)\}\)\([^)]*\);?/g, "$1");
+
+    return source.trim();
   }
 };
