@@ -131,12 +131,12 @@ self.addEventListener("message", function(e) {
     
     // packer (Dean Edwards)
     try {
-      const { Packer } = await import("../packers/p_a_c_k_e_r.js");
-      if (Packer.detect(source)) {
-        source = Packer.unpack(source);
-        mark("p_a_c_k_e_r");
-      }
-    } catch {}
+       importScripts("../packers/p_a_c_k_e_r.js");
+       if (P_A_C_K_E_R.detect(source)) {
+       source = P_A_C_K_E_R.unpack(source);
+       mark("p_a_c_k_e_r");
+     }
+   } catch {}
 
   } catch (err) {
     console.log("[worker error]", err);
