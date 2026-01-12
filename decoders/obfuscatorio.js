@@ -202,3 +202,8 @@ function getFuncDefiner(key, source) {
 if (typeof self !== 'undefined') {
   self.ObfuscatorIO = ObfuscatorIO;
 }
+
+// detection
+ObfuscatorIO.detect = function(source){
+  return /_0x[a-f0-9]{2,6}\s*=\s*function|\['_0x|return\s*\[.*?\]\s*\[/.test(source);
+};
