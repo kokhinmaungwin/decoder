@@ -39,23 +39,12 @@ self.addEventListener("message", function(e) {
     // array encode
     try {
       importScripts("../decoders/arraydecode.js");
-      const pattsplit = /(?:[^\\])"];/;
-      if (pattsplit.test(source)) {
-        let last = source.match(pattsplit)[0][0];
-        let [h, t] = source.split(pattsplit);
-        let v = h + last + '"]';
-        let name = v.match(/var\s([\w\d]+)\s?=\s?\["/)[1];
-        let arr = eval(v.replace(
-          new RegExp('var\\s' + name + '\\s?=\\s?\\["'),
-          '["'
-        ));
-        source = t.replace(
-          new RegExp(name + '\\[(\\d+)\\]', 'g'),
-          (_, i) => JSON.stringify(arr[i])
-        );
-        mark("arrayencode");
-      }
-    } catch {}
+      const out = ArrayDecode(source);
+         if (out !== source) {
+         source = out;
+         mark("arrayencode");
+       }
+     } catch (e) {}
     
     // jsfuck
     try {
