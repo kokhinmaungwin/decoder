@@ -15,9 +15,9 @@ export function decodeHexDeep(input, maxLoop = 50) {
     });
 
     // \uXXXX
-    code = code.replace(/\\u([\dA-Fa-f]{4})/g, (m, u) => {
-      changed = true;
-      return String.fromCharCode(parseInt(u, 16));
+    code = code.replacecode = code.replace(/\\\\u([0-9A-Fa-f]{4})|\\u([0-9A-Fa-f]{4})/g, (_,h1,h2) => {
+      const h = h1 || h2;
+      return String.fromCharCode(parseInt(h, 16));
     });
 
     // [0x68,0x65,...]
