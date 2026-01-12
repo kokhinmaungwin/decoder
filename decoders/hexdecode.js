@@ -33,18 +33,15 @@ export function decodeHexDeep(input, maxLoop = 50) {
     );
 
     // pure hex string
-    if (/^[0-9A-Fa-f\s]+$/.test(code) && code.replace(/\s+/g,"").length % 2 === 0) {
-      try {
-        let hex = code.replace(/\s+/g, "");
-        let out = "";
-        for (let i = 0; i < hex.length; i += 2) {
-          out += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-        }
-        code = out;
-        changed = true;
-      } catch {}
+    if (/^[0-9A-Fa-f\s]+$/.test(code) && code.replace(/\s+/g, '').length % 2 === 0) {
+    try {
+      let hex = code.replace(/\s+/g, '');
+      let out = '';
+      for (let i = 0; i < hex.length; i += 2) {
+        out += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+      }
+      return out;
+    } catch {
+      return code;
     }
   }
-
-  return code;
-}
