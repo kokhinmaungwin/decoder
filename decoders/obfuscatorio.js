@@ -1,6 +1,6 @@
+// obfuscatorio.js
 export function ObfuscatorIO(source){
 
-  // ---------- V1 (array + index function) ----------
   const fnMatch = source.match(
     /var\s+(_0x[a-f0-9]{2,6})\s*=\s*function\s*\(\w+\)\s*\{\s*return\s*(\[[\s\S]*?\])\s*\[\w+\]\s*\}/i
   );
@@ -24,7 +24,6 @@ export function ObfuscatorIO(source){
     return source.trim();
   }
 
-  // ---------- V2 ----------
   const hexCall = /_0x[a-f0-9]{2,6}\(["']0x[a-f0-9]+["']\)/i;
   if(hexCall.test(source)){
     try{
@@ -35,6 +34,7 @@ export function ObfuscatorIO(source){
   return source;
 }
 
+// Detect obfuscatorio patterns (V1 or V2)
 ObfuscatorIO.detect = function(source){
   return (
     /var\s+_0x[a-f0-9]{2,6}\s*=\s*function\s*\(\w+\)\s*\{\s*return\s*\[[\s\S]*?\]\s*\[\w+\]/i.test(source)
@@ -43,10 +43,12 @@ ObfuscatorIO.detect = function(source){
   );
 };
 
+// Unpack interface
 ObfuscatorIO.unpack = function(source){
   return ObfuscatorIO(source);
 };
 
+// For WebWorker scope
 if(typeof self !== "undefined"){
   self.ObfuscatorIO = ObfuscatorIO;
 }
