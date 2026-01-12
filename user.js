@@ -69,11 +69,11 @@ export async function decodeByType(input, type) {
       case "obfuscatorio": {
         const { ObfuscatorIO } = await import("./decoders/obfuscatorio.js");
         if (ObfuscatorIO.detect(code)) {
-        code = ObfuscatorIO.unpack(code, { calc: true, strMerge: true });
+        code = ObfuscatorIO.unpack(code);
         history.push("obfuscatorio");
-      }
+     }
         break;
-      }
+     }
 
       case "javascriptobfuscator": {
         const { JavascriptObfuscator } = await import("./packers/javascriptobfuscator.js");
