@@ -1,6 +1,6 @@
 export function ObfuscatorIO(source){
 
-  // ---------- V1 ----------
+  // ---------- V1 (array + index function) ----------
   const fnMatch = source.match(
     /var\s+(_0x[a-f0-9]{2,6})\s*=\s*function\s*\(\w+\)\s*\{\s*return\s*(\[[\s\S]*?\])\s*\[\w+\]\s*\}/i
   );
@@ -9,12 +9,18 @@ export function ObfuscatorIO(source){
     const fnName = fnMatch[1];
     const arr = eval(fnMatch[2]);
 
+    // replace ALL calls _0xabc(0), _0xabc(1) …
     source = source.replace(
       new RegExp(fnName + "\\((\\d+)\\)", "g"),
       (m,i)=> JSON.stringify(arr[i])
     );
 
+    // remove helper function
     source = source.replace(fnMatch[0], "");
+
+    // cleanup: alert("x") instead of "alert"("x")
+    source = source.replace(/["']alert["']\s*\(/g, "alert(");
+
     return source.trim();
   }
 
@@ -26,8 +32,7 @@ export function ObfuscatorIO(source){
     }catch{}
   }
 
-  // ❗ VERY IMPORTANT
-  return source;   // <-- never throw here
+  return source;
 }
 
 ObfuscatorIO.detect = function(source){
