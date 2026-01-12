@@ -15,7 +15,7 @@ export function decodeHexDeep(input, maxLoop = 50) {
     });
 
     // \uXXXX
-    code = code.replacecode(/\\\\u([0-9A-Fa-f]{4})|\\u([0-9A-Fa-f]{4})/g, (_,h1,h2) => {
+    code = code.replace(/\\\\u([0-9A-Fa-f]{4})|\\u([0-9A-Fa-f]{4})/g, (_,h1,h2) => {
       const h = h1 || h2;
       return String.fromCharCode(parseInt(h, 16));
     });
