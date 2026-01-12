@@ -29,20 +29,16 @@ self.addEventListener("message", function(e) {
     
     // number encode
     try {
-      const patt = /_\d{4}\((_\d{4})\);\}/;
-      if (patt.test(source)) {
-        let s = source
-          .replace(/var\s/g, 'this.')
-          .replace(/function\s(_\d{4})\(/, 'this.$1=function(')
-          .replace(patt, 'self.__num=$1;};');
-        eval('(function(){' + s + '})();');
-        source = self.__num;
+      importScripts("../decoders/numberdecode.js");
+      if (/\b0x[0-9a-f]+\b|!\+\[\]|\+true|\+false|<<|>>|\^|\|/.test(source)) {
+        source = decodeNumberDeep(source);
         mark("numberencode");
       }
     } catch {}
     
     // array encode
     try {
+      importScripts("../decoders/arraydecode.js");
       const pattsplit = /(?:[^\\])"];/;
       if (pattsplit.test(source)) {
         let last = source.match(pattsplit)[0][0];
@@ -63,6 +59,7 @@ self.addEventListener("message", function(e) {
     
     // jsfuck
     try {
+      importScripts("../decoders/jsfuckdecode.js");
       if (/\+\[\]/i.test(source)) {
         source = String(eval(source.slice(0, -2)));
         mark("jsfuck");
