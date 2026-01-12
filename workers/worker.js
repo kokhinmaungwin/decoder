@@ -103,15 +103,17 @@ self.addEventListener("message", function(e) {
     // obfuscatorio
     try {
       importScripts("../decoders/obfuscatorio.js");
-  let old;
-  do {
-    old = source;
-    source = ObfuscatorIO(source, { calc: true, strMerge: true });
-  } while (source !== old);
-  mark("obfuscatorio");
-} catch (e) {
-  console.error("Obfuscatorio decode failed:", e);
-}
+      if (ObfuscatorIO.detect(source)) {
+      let old;
+      do {
+      old = source;
+      source = ObfuscatorIO(source,{calc:true,strMerge:true});
+    } while(source !== old);
+      mark("obfuscatorio");
+   }
+   } catch(e){
+     console.log("obfuscatorio fail",e);
+   }
 
    // javascriptobfuscator
    try {
