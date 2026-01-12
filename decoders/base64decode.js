@@ -1,76 +1,77 @@
-/* Base64 Decode - ERROR SAFE */
-export function decodeBase64Deep(input, maxLoop = 50) {
-  if (typeof input !== "string") {
-    throw new Error("Base64 input must be a string");
-  }
-
+/* Base64 decode.js */
+export function decodeBase64Deep(input, maxLoop = 20) {
   let code = input.trim();
   let loop = 0;
   let changed = true;
-  let decodedOnce = false;
 
-  function safeAtob(str) {
-    try {
-      str = str.replace(/\s+/g, "");
-      return decodeURIComponent(
-        Array.prototype.map
-          .call(atob(str), c =>
-            "%" + c.charCodeAt(0).toString(16).padStart(2, "0")
-          )
-          .join("")
-      );
-    } catch (e) {
-      throw new Error("Invalid Base64 string");
-    }
-  }
-
-  function isBase64(str) {
-    str = str.replace(/\s+/g, "");
-    return (
-      str.length >= 8 &&
-      str.length % 4 === 0 &&
-      /^[A-Za-z0-9+/]+={0,2}$/.test(str)
+  function safeAtobUnicode(b64) {
+    const bin = atob(b64);
+    return decodeURIComponent(
+      Array.prototype.map
+        .call(bin, c => "%" + c.charCodeAt(0).toString(16).padStart(2, "0"))
+        .join("")
     );
   }
 
-  while (changed && loop < maxLoop) {
-    loop++;
+  function isBase64(s) {
+    s = s.replace(/\s+/g, "");
+    return s.length >= 8 && s.length % 4 === 0 && /^[A-Za-z0-9+/]+={0,2}$/.test(s);
+  }
+
+  while (changed && loop++ < maxLoop) {
     changed = false;
 
-    // raw base64
+    // add this block to decode pure base64 string ONLY
     if (isBase64(code)) {
-      const decoded = safeAtob(code);
-      if (decoded !== code) {
-        code = decoded;
-        changed = true;
-        decodedOnce = true;
-        continue;
+      try {
+        const dec = safeAtobUnicode(code);
+        // avoid decoding garbage binary
+        if (!/[\x00-\x08\x0B\x0C\x0E-\x1F]/.test(dec)) {
+          code = dec;
+          changed = true;
+          continue;
+        }
+      } catch {
+        // ignore errors
       }
     }
 
-    // atob("...")
+    // existing code for atob("...")
     code = code.replace(
-      /atob\s*\(\s*(['"`])([\s\S]*?)\1\s*\)/g,
+      /atob\s*\(\s*(['"])([A-Za-z0-9+/=]+)\1\s*\)/g,
       (m, q, b64) => {
         if (!isBase64(b64)) return m;
-        decodedOnce = true;
+        const decoded = safeAtobUnicode(b64);
         changed = true;
-        return JSON.stringify(safeAtob(b64));
+        return JSON.stringify(decoded);
       }
     );
 
-    // eval(atob("..."))
+    // "SGVsbG8=" or 'SGVsbG8='
     code = code.replace(
-      /eval\s*\(\s*(atob\s*\([\s\S]*?\))\s*\)/g,
+      /(["'])([A-Za-z0-9+/]{8,}={0,2})\1/g,
+      (m, q, b64) => {
+        try {
+          if (!isBase64(b64)) return m;
+          const dec = safeAtobUnicode(b64);
+          if (/[\x00-\x08\x0B\x0C\x0E-\x1F]/.test(dec)) return m;
+          changed = true;
+          return q + dec.replace(/\\/g,"\\\\").replace(/"/g,'\\"') + q;
+        } catch {
+          return m;
+        }
+      }
+    );
+
+    // remove eval(atob("...")) → just atob("...")
+    code = code.replace(
+      /eval\s*\(\s*(atob\s*\(\s*(['"`])[\s\S]*?\2\s*\))\s*\)/g,
       (_, inner) => {
         changed = true;
         return inner;
       }
     );
-  }
-
-  if (!decodedOnce) {
-    throw new Error("No valid Base64 content found");
+    
   }
 
   return code;
