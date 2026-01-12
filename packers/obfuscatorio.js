@@ -1,5 +1,4 @@
 // obfuscatorio.js
-import * as utils from './utils.js';
 
 export function ObfuscatorIO(source, options = {}) {
   const detectPattern = /((?![^_a-zA-Z$])[\w$]*)\(-?('|")(0x[a-f\d]+|\\x30\\x78[\\xa-f\d]+)\2(\s*,\s*('|").+?\5)?\)/gi;
