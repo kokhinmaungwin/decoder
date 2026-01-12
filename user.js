@@ -53,8 +53,8 @@ export async function decodeByType(input, type) {
       }
 
       case "number": {
-        const { NumberDecode } = await import("./decoders/numberdecode.js");
-        code = NumberDecode(code);
+        const { decodeNumberDeep } = await import("./decoders/numberdecode.js");
+        code = decodeNumberDeep(code);
         history.push("number");
         break;
       }
