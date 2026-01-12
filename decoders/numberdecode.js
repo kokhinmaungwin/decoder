@@ -1,15 +1,52 @@
-/* Number Decode */
-export function decodeNumberDeep(source) {
-  const detectPattern = /(_\d{4})\((_\d{4})\);\}/;
-  if (!detectPattern.test(source)) throw new Error('Not matched pattern');
+/* Number Decode (safe) */
+export function decodeNumberDeep(code, maxLoop = 50) {
+  let loop = 0;
+  let changed = true;
 
-  let code = source;
+  while (changed && loop++ < maxLoop) {
+    changed = false;
 
-  code = code.replace(/function\s(_\d{4})\(/, 'this.$1=function(');
-  code = code.replace(detectPattern, 'globalThis.underscoreNumberSource=$1;};');
+    // hex → decimal
+    code = code.replace(/\b0x[0-9a-fA-F]+\b/g, m => {
+      changed = true;
+      return String(parseInt(m, 16));
+    });
 
-  const fn = new Function(`"use strict"; return (function(){ ${code} })();`);
-  fn();
+    // +true / +false
+    code = code.replace(/\+true/g, () => {
+      changed = true;
+      return "1";
+    });
+    code = code.replace(/\+false/g, () => {
+      changed = true;
+      return "0";
+    });
 
-  return globalThis.underscoreNumberSource;
+    // JSFuck numbers
+    code = code.replace(/!\+\[\]/g, () => {
+      changed = true;
+      return "1";
+    });
+    code = code.replace(/\+\[\]/g, () => {
+      changed = true;
+      return "0";
+    });
+
+    // math expressions
+    code = code.replace(
+      /\b\d+\s*(?:[+\-*/%|&^]|<<|>>)\s*\d+\b/g,
+      expr => {
+        try {
+          const v = Function("return " + expr)();
+          if (Number.isFinite(v)) {
+            changed = true;
+            return String(v);
+          }
+        } catch {}
+        return expr;
+      }
+    );
+  }
+
+  return code;
 }
