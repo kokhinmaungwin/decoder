@@ -9,8 +9,8 @@ export function decodeHexDeep(input, maxLoop = 50) {
     changed = false;
 
     // \xNN
-    code = code.replace(/\\x([0-9A-Fa-f]{2})/g, (m, h) => {
-      changed = true;
+    code = code.replace(/\\\\x([0-9A-Fa-f]{2})|\\x([0-9A-Fa-f]{2})/g, (_,h1,h2) => {
+      const h = h1 || h2;
       return String.fromCharCode(parseInt(h, 16));
     });
 
