@@ -107,12 +107,12 @@ self.addEventListener("message", function(e) {
       let old;
       do {
       old = source;
-      source = ObfuscatorIO(source,{calc:true,strMerge:true});
-    } while(source !== old);
-      mark("obfuscatorio");
-   }
-   } catch(e){
-     console.log("obfuscatorio fail",e);
+        source = ObfuscatorIO.unpack(source);
+      } while (source !== old);
+        mark("obfuscatorio");
+     }
+   } catch (e) {
+     console.error("obfuscatorio failed", e);
    }
 
    // javascriptobfuscator
