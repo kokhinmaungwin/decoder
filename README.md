@@ -89,7 +89,7 @@ const decodedObfuscatorio = ObfuscatorIO.unpack(obfuscatedCode);
 
 - 1️⃣ Base64
   - Input
-```text
+```Js
 var s = atob("aHR0cHM6Ly93d3cuYmxvZ2dlci5jb20=");
 ```
   - Output
