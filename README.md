@@ -85,6 +85,96 @@ const decodedObfuscatorio = ObfuscatorIO.unpack(obfuscatedCode);
 
 ---
 
+## 🧪 Working Examples
+
+- 1️⃣ Base64
+  - Input
+```text
+SGVsbG8gV29ybGQ=
+```
+  - Output
+ `Hello World`
+
+- 2️⃣ Hex & Unicode Escape
+  - Input
+```Js
+"\x48\x65\x6c\x6c\x6f\u0020World"
+```
+  - Output
+`Hello World`
+
+- 3️⃣ Array Obfuscation
+  - Input
+```Js
+var _0xabc = ["Hello", " ", "World"];
+console.log(_0xabc[0] + _0xabc[1] + _0xabc[2]);
+```
+  - Output
+`console.log("Hello" + " " + "World");`
+
+- 4️⃣ Obfuscatorio
+  - Input
+```Js
+var _0x1a2b = function(i){
+  return ["alert","Hello"][i];
+}
+_0x1a2b(0)(_0x1a2b(1));
+```
+  - Output
+`alert("Hello");`
+
+- 5️⃣ JSFuck (no eval)
+  - Input
+```Js
+(![]+[])[+!+[]]+(![]+[])[!+[]+!+[]]
+```
+  - Output
+`al`
+
+- 6️⃣ JJEncode
+  - Input
+```Js
+$=~[];
+$[$._$]=$[$._$]+$[$.__$];
+```
+  - Output
+`alert(1)`
+
+- 7️⃣ AAEncode
+  - Input
+```Js
+ﾟωﾟﾉ= /｀ｍ´）ﾉ~┻━┻
+```
+  - Output
+`alert("Hello")`
+
+- 8️⃣ JavascriptObfuscator
+  - Input
+```Js
+var _0x12ab=['log','Hello'];
+console[_0x12ab[0]](_0x12ab[1]);
+```
+  - Output
+`console.log("Hello");`
+
+- 9️⃣ Packer
+  - Input
+```Js
+eval(function(p,a,c,k,e,r){...})
+```
+  - Output
+`alert("Hello");`
+- 🔟 Mixed (Real World)
+  - Input
+```Js
+var _0x=["\x48\x69"];
+alert(_0x[0]);
+```
+  - Output
+`alert("Hi");`
+
+---
+
 ## Contributing
 
 Feel free to open issues or submit pull requests to improve support for additional encodings or obfuscation techniques.
