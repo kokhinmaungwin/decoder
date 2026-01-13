@@ -27,7 +27,7 @@
 - You can install via npm:
 
 ```bash
-npm install all-decode
+npm install decoder
 ```
 Or include it directly in your project.
 
@@ -73,8 +73,8 @@ const decodedObfuscatorio = ObfuscatorIO.unpack(obfuscatedCode);
   - Decode JJencoded JavaScript.
 - JSFuckDecode(source)
   - Decode JSFuck obfuscated JavaScript code.
-- Note: If the input requires eval to decode, it may throw an error for security reasons.
-ObfuscatorIO.unpack(source)
+  - Note: If the input requires eval to decode, it may throw an error for security reasons.
+- ObfuscatorIO.unpack(source)
   - Decode JavaScript code obfuscated by Obfuscatorio.
 - myObfuscateDecode(source)
   - Decode JavaScript obfuscated by MyObfuscate.
