@@ -15,9 +15,9 @@
   - AAencode
   - JJencode
   - JSFuck (with and without `eval`)
-  - Obfuscatorio
-  - MyObfuscate
-  - JavascriptObfuscator
+  - Obfuscatorio (`no support`)
+  - MyObfuscate (`no support`)
+  - JavascriptObfuscator (`no support`)
   - Packer
 
 ---
@@ -75,11 +75,11 @@ const decodedObfuscatorio = ObfuscatorIO.unpack(obfuscatedCode);
   - Decode JSFuck obfuscated JavaScript code.
   - Note: If the input requires eval to decode, it may throw an error for security reasons.
 - ObfuscatorIO.unpack(source)
-  - Decode JavaScript code obfuscated by Obfuscatorio.
+  - Decode JavaScript code obfuscated by Obfuscatorio.(`source map`)
 - myObfuscateDecode(source)
-  - Decode JavaScript obfuscated by MyObfuscate.
+  - Decode JavaScript obfuscated by MyObfuscate.(`source map`)
 - JavascriptObfuscatorDecode(source)
-  - Decode JavaScript obfuscated by JavascriptObfuscator.
+  - Decode JavaScript obfuscated by JavascriptObfuscator.(`source map`)
 - packerDecode(source)
   - Decode code packed with Dean Edward's Packer.
 
