@@ -13,26 +13,27 @@
     <textarea id="input" placeholder="Paste encoded Base64 / Hex / Unicode / Array here..."></textarea>
 
 <!-- Add decode type select here -->
-<label for="decodeType">Choose decode type:</label>
-<select id="decodeType">
-  <option value="base64">Base64</option>
-  <option value="hex">Hex & Unicode escape</option>
-  <option value="array">Array</option>
-  <option value="jj">JJ</option>
-  <option value="aa">AA</option>
-  <option value="jsfuck">JSFuck</option>
-  <option value="number">Number</option>
-  <option value="url">URL</option>
-  <option value="obfuscatorio">ObfuscatorIO</option>
-  <option value="javascriptobfuscator">JavaScript Obfuscator</option>
-  <option value="myobfuscate">MyObfuscate</option>
-  <option value="p_a_c_k_e_r">P_A_C_K_E_R</option>
-</select>
+<div id="decodeCircles">
 
-<div>
-  <button id="decodeBtn">Decode All</button>
-  <button id="copyBtn">Copy Output</button>
-  <button id="clearBtn">Clear</button>
+  <!-- decode type circles -->
+  <div class="circle option active" data-type="base64">Base64</div>
+  <div class="circle option" data-type="hex">Hex</div>
+  <div class="circle option" data-type="array">Array</div>
+  <div class="circle option" data-type="jj">JJ</div>
+  <div class="circle option" data-type="aa">AA</div>
+  <div class="circle option" data-type="jsfuck">JSFuck</div>
+  <div class="circle option" data-type="number">Number</div>
+  <div class="circle option" data-type="url">URL</div>
+  <div class="circle option" data-type="obfuscatorio">ObfIO</div>
+  <div class="circle option" data-type="javascriptobfuscator">JSObf</div>
+  <div class="circle option" data-type="myobfuscate">MyObf</div>
+  <div class="circle option" data-type="p_a_c_k_e_r">PACKER</div>
+
+  <!-- action buttons (NOT options) -->
+  <div class="circle action" id="decodeBtn">Decode</div>
+  <div class="circle action" id="copyBtn">Copy</div>
+  <div class="circle action" id="clearBtn">Clear</div>
+
 </div>
 
     <h3>Decoded Output</h3>
