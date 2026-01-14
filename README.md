@@ -15,9 +15,9 @@
   - AAencode
   - JJencode
   - JSFuck (with and without `eval`)
-  - Obfuscatorio (**requires source map**)
-  - MyObfuscate (**requires source map**)
-  - JavascriptObfuscator (**requires source map**)
+  - Obfuscatorio `(**requires source map**)`
+  - MyObfuscate `(**requires source map**)`
+  - JavascriptObfuscator `(**requires source map**)`
   - Packer
 
 > **Note:**  
