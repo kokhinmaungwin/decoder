@@ -90,10 +90,10 @@ const decodedObfuscatorio = ObfuscatorIO.unpack(obfuscatedCode);
 - 1️⃣ Base64
   - Input
 ```Js
-var s = atob("aHR0cHM6Ly93d3cuYmxvZ2dlci5jb20=");
+var s = atob("aHR0cHM6Ly93d3cuZXhhbXBsZS5jb20=");
 ```
   - Output
-`var s = "https://www.blogger.com";`
+`var s = "https://www.example.com";`
 
 - 2️⃣ Hex & Unicode Escape
   - Input
