@@ -9,14 +9,14 @@ export async function decodeByType(input, type) {
     switch (String(type).trim()) {
 
       case "base64": {
-        const { decodeBase64Deep } = await import("./decoders/base64decode.js");
+        const { decodeBase64Deep } = await import("./decodes/base64decode.js");
         code = decodeBase64Deep(code);
         history.push("base64");
         break;
       }
 
       case "hex": {
-        const { decodeHexDeep } = await import("./decoders/hexdecode.js");
+        const { decodeHexDeep } = await import("./decodes/hexdecode.js");
         code = decodeHexDeep(code);
         history.push("hex");
         break;
@@ -67,9 +67,10 @@ export async function decodeByType(input, type) {
       }
       
       case "obfuscatorio": {
-        const { ObfuscatorIO } = await import("./decoders/obfuscatorio.js");
-        if (ObfuscatorIO.detect(code)) {
-        code = ObfuscatorIO.unpack(code);
+        const { detect, unpack } = await import("./decoders/obfuscatorio.esm.js");
+        const type = detect(source);
+        if (type === "obfuscatorio") {
+        source = unpack(source);
         history.push("obfuscatorio");
      }
         break;
