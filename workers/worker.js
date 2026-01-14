@@ -88,18 +88,13 @@ self.addEventListener("message", function(e) {
     
     // obfuscatorio
     try {
-      importScripts("../decoders/obfuscatorio.js");
-      if (ObfuscatorIO.detect(source)) {
-      let old;
-      do {
-      old = source;
-        source = ObfuscatorIO.unpack(source);
-      } while (source !== old);
-        mark("obfuscatorio");
-     }
-   } catch (e) {
-     console.error("obfuscatorio failed", e);
-   }
+      importScripts("../decoders/obfuscatorio.worker.js");
+      const type = self.Obf.detect(source);
+      if (type === "obfuscatorio") {
+      source = self.Obf.unpack(source);
+      mark(type);
+      }
+    } catch (e) {}
 
    // javascriptobfuscator
    try {
