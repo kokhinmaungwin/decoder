@@ -37,8 +37,7 @@ pre {
 }
 
 .container {
-  width: 100%;
-  max-width: 450px;
+  max-width: 900px;
   margin: auto;
 }
 
