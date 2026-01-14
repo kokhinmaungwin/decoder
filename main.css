@@ -36,23 +36,52 @@ pre {
   font-size: 14px;
 }
 
-button {
-  margin: 8px 8px 8px 0;
-  padding: 8px 16px;
-  background: #0284c7;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-weight: 600;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background: #0369a1;
-}
-
 .container {
   max-width: 900px;
   margin: auto;
+}
+
+#decodeCircles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+  gap: 10px;
+  margin: 1px 0;
+
+}
+     
+.circle {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #1e293b, #020617);
+  color: #22d3ee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 12px;
+  cursor: pointer;
+  box-shadow: 0 0 10px #22d3ee;
+  user-select: none;
+  transition: 0.2s;
+}
+
+.circle:hover {
+  transform: scale(1.1);
+}
+
+.circle.active {
+  background: radial-gradient(circle, #22d3ee, #0284c7);
+  color: white;
+  box-shadow: 0 0 25px #22d3ee;
+}
+
+#decodeBtn:hover {
+  background: #ff0099;
+}
+#copyBtn:hover {
+  background: #1c15ff;
+}
+#clearBtn:hover {
+  background: #ffeaff;
 }
