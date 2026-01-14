@@ -9,14 +9,14 @@ export async function decodeByType(input, type) {
     switch (String(type).trim()) {
 
       case "base64": {
-        const { decodeBase64Deep } = await import("./decodes/base64decode.js");
+        const { decodeBase64Deep } = await import("./decoders/base64decode.js");
         code = decodeBase64Deep(code);
         history.push("base64");
         break;
       }
 
       case "hex": {
-        const { decodeHexDeep } = await import("./decodes/hexdecode.js");
+        const { decodeHexDeep } = await import("./decoders/hexdecode.js");
         code = decodeHexDeep(code);
         history.push("hex");
         break;
