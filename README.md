@@ -15,10 +15,13 @@
   - AAencode
   - JJencode
   - JSFuck (with and without `eval`)
-  - Obfuscatorio (`no support`)
-  - MyObfuscate (`no support`)
-  - JavascriptObfuscator (`no support`)
+  - Obfuscatorio (**requires source map**)
+  - MyObfuscate (**requires source map**)
+  - JavascriptObfuscator (**requires source map**)
   - Packer
+
+> **Note:**  
+> For Obfuscatorio, MyObfuscate, and JavascriptObfuscator, decoding is only possible if the **source map** is available. Without source maps, decoding is partial or impossible.
 
 ---
 
