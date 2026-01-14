@@ -232,7 +232,6 @@ it is **impossible** to fully decode the obfuscated JavaScript without the corre
 ## Usage
 
 ```bash
-node decode.js 
 node decode.js
 path/to/obfuscated.js
 path/to/obfuscated.js.map
@@ -242,11 +241,11 @@ Make sure the .map file corresponds exactly to the obfuscated JavaScript file.
 ---
 
 ## Summary
-|--------------------|------------------------|
-| Situation          | Decoding Result        |
+|------------|---------------|
+| Situation | Decoding Result |
 | Source Map Present | 100% Decoding Possible |
-| Source Map Missing | Partial Decoding Only  |
-| VM Obfuscation Used| Decoding Impossible    |
+| Source Map Missing | Partial Decoding Only |
+| VM Obfuscation Used | Decoding Impossible |
 
 ---
 
