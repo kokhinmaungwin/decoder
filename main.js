@@ -6,12 +6,23 @@ const outputArea = document.getElementById("output");
 const decodeBtn = document.getElementById("decodeBtn");
 const copyBtn = document.getElementById("copyBtn");
 const clearBtn = document.getElementById("clearBtn");
-const decodeTypeSelect = document.getElementById("decodeType");
+let selectedDecodeType = "base64";
+
+// ✅ ONLY option circles
+const optionCircles = document.querySelectorAll(".circle.option");
+optionCircles.forEach(circle => {
+  circle.addEventListener("click", () => {
+    optionCircles.forEach(c => c.classList.remove("active"));
+    circle.classList.add("active");
+    selectedDecodeType = circle.dataset.type;
+    console.log("Selected type:", selectedDecodeType);
+  });
+});
 
 // Button Actions
 decodeBtn.onclick = async () => {
   const input = inputArea.value.trim();
-  const decodeType = decodeTypeSelect.value;
+  const decodeType = selectedDecodeType;
 
   console.log("[Decode click]", decodeType, input);
 
