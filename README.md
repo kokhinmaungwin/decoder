@@ -195,6 +195,67 @@ Feel free to open issues or submit pull requests to improve support for addition
 
 ---
 
+## Notes
+- Some decoding methods may rely on eval internally, which can be dangerous. Use caution and only decode trusted input.
+- Not all encoded or obfuscated code can be perfectly decoded, especially if the encoding uses custom or uncommon patterns.
+
+---
+
+# Decoder Project
+
+## About
+
+This project aims to decode JavaScript code obfuscated with Obfuscatorio and similar tools.
+
+---
+
+## Important Notice: Source Map Requirement
+
+### ⚠️ Source Map is Essential for Full Decoding
+
+Due to advanced obfuscation techniques such as:
+
+- Virtual Machine-based obfuscation
+- Control flow flattening
+- Property renaming and mangling
+
+it is **impossible** to fully decode the obfuscated JavaScript without the corresponding **source map** file.
+
+### What if You Don't Have a Source Map?
+
+- Decoding will only be **partial** and many parts of the code will remain unreadable.
+- Some obfuscation methods cannot be reversed without the original source map.
+- If you want to fully recover the original code, **please ensure the source map file is available**.
+
+---
+
+## Usage
+
+```bash
+node decode.js 
+node decode.js
+path/to/obfuscated.js
+path/to/obfuscated.js.map
+```
+Make sure the .map file corresponds exactly to the obfuscated JavaScript file.
+
+---
+
+## Summary
+|--------------------|------------------------|
+| Situation          | Decoding Result        |
+| Source Map Present | 100% Decoding Possible |
+| Source Map Missing | Partial Decoding Only  |
+| VM Obfuscation Used| Decoding Impossible    |
+
+---
+
+## Contribution
+- If you want to improve decoding without source maps, pull requests are welcome!
+- Thank you for using the decoder project.
+
+---
+
 ## License
 
 MIT License
@@ -205,9 +266,4 @@ MIT License
 
 Created and maintained by [Khin Maung Win]
 
----
-
-## Notes
-- Some decoding methods may rely on eval internally, which can be dangerous. Use caution and only decode trusted input.
-- Not all encoded or obfuscated code can be perfectly decoded, especially if the encoding uses custom or uncommon patterns.
 ---
